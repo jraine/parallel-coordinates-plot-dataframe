@@ -3,8 +3,9 @@ from matplotlib import ticker
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.interpolate import make_interp_spline
 
-def parallel_plot(df,cols,rank_attr,cmap='Spectral',spread=None):
+def parallel_plot(df,cols,rank_attr,cmap='Spectral',spread=None,curved=False,curvedextend=0.1):
     '''Produce a parallel coordinates plot from pandas dataframe with line colour with respect to a column.
     Required Arguments:
         df: dataframe
@@ -13,6 +14,8 @@ def parallel_plot(df,cols,rank_attr,cmap='Spectral',spread=None):
     Options:
         cmap: Colour palette to use for ranking of lines
         spread: Spread to use to separate lines at categorical values
+        curved: Spline interpolation along lines
+        curvedextend: Fraction extension in y axis, adjust to contain curvature
     Returns:
         x coordinates for axes, y coordinates of all lines'''
     colmap = matplotlib.cm.get_cmap(cmap)
@@ -53,10 +56,17 @@ def parallel_plot(df,cols,rank_attr,cmap='Spectral',spread=None):
                 c_vals = c_vals + offset
             valmat[i] = c_vals
             
-       
+    extendfrac = curvedextend if curved else 0.05  
     for i,ax in enumerate(axes):
         for idx in range(valmat.shape[-1]):
-            ax.plot(x,valmat[:,idx],color=colmap(valmat[-1,idx]),alpha=0.3)
+            if curved:
+                x_new = np.linspace(0, len(x), len(x)*20)
+                a_BSpline = make_interp_spline(x, valmat[:,idx],k=3,bc_type='clamped')
+                y_new = a_BSpline(x_new)
+                ax.plot(x_new,y_new,color=colmap(valmat[-1,idx]),alpha=0.3)
+            else:
+                ax.plot(x,valmat[:,idx],color=colmap(valmat[-1,idx]),alpha=0.3)
+        ax.set_ylim(0-extendfrac,1+extendfrac)
         ax.set_xlim(i,i+1)
     
     for dim, (ax,col) in enumerate(zip(axes,cols)):
@@ -67,9 +77,11 @@ def parallel_plot(df,cols,rank_attr,cmap='Spectral',spread=None):
     
     
     plt.subplots_adjust(wspace=0)
-    norm = matplotlib.colors.Normalize(*axes[-1].get_ylim())
+    norm = matplotlib.colors.Normalize(0,1)#*axes[-1].get_ylim())
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
-    cbar = plt.colorbar(sm,pad=0,ticks=ax_info[rank_attr][1])
+    cbar = plt.colorbar(sm,pad=0,ticks=ax_info[rank_attr][1],extend='both',extendrect=True,extendfrac=extendfrac)
+    if curved:
+        cbar.ax.set_ylim(0-curvedextend,1+curvedextend)
     cbar.ax.set_yticklabels(ax_info[rank_attr][0])
     cbar.ax.set_xlabel(rank_attr)
     plt.show()
