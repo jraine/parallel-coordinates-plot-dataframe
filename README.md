@@ -7,8 +7,8 @@ Additionally can handle categorical data types, and treats columns with only a h
 
 Useful for visualising hyperparameter scans for deep learning models, with hyperparameter options saved as columns in a dataframe.
 
-![Image of Parallel Coordinates without spread](https://github.com/jraine/parallel-coordinates-plot-dataframe/blob/master/nospread.png)
+![Image of Parallel Coordinates without spread](nospread.png)
 
 Optionally specify a spread to add around categorical points for easier visualisation.
 
-![Image of Parallel Coordinates with spread](https://github.com/jraine/parallel-coordinates-plot-dataframe/blob/master/spread.png)
+![Image of Parallel Coordinates with spread](spread.png)
