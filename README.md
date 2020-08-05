@@ -7,16 +7,16 @@ Additionally can handle categorical data types, and treats columns with only a h
 
 Useful for visualising hyperparameter scans for deep learning models, with hyperparameter options saved as columns in a dataframe.
 
-![Image of Parallel Coordinates without spread](nospread.png)
+![Image of Parallel Coordinates without spread](examples/nospread.png)
 
 Optionally specify a spread to add around categorical points for easier visualisation.
 
-![Image of Parallel Coordinates with spread](spread.png)
+![Image of Parallel Coordinates with spread](examples/spread.png)
 
 Alternatively switch to curved lines
 
-![Image of Parallel Coordinates with curved lines](spline.png)
+![Image of Parallel Coordinates with curved lines](examples/spline.png)
 
 Or both!
 
-![Image of Parallel Coordinates with curved lines and spread](splinespread.png)
+![Image of Parallel Coordinates with curved lines and spread](examples/splinespread.png)
