@@ -12,3 +12,11 @@ Useful for visualising hyperparameter scans for deep learning models, with hyper
 Optionally specify a spread to add around categorical points for easier visualisation.
 
 ![Image of Parallel Coordinates with spread](spread.png)
+
+Alternatively switch to curved lines
+
+![Image of Parallel Coordinates with curved lines](spline.png)
+
+Or both!
+
+![Image of Parallel Coordinates with curved lines and spread](splinespread.png)
